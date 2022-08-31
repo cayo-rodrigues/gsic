@@ -1,4 +1,3 @@
-void print_tree(node* root);
 void free_tree(node* root);
 
 int count_nodes(node *tree, int diretion);

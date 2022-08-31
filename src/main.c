@@ -5,6 +5,7 @@
 // self made header files
 #include "structs.h"
 #include "tree.h"
+#include "products.h"
 
 // global variables
 const char *PRODUCTS_DB_PATH = "src/db/products.csv";
@@ -26,6 +27,7 @@ int main(int argc, char *argv[])
 
     node *tree = NULL;
 
+    // read products database and organize data in a binary tree
     tree = read_db(tree, fp);
     if (tree == NULL)
     {
@@ -42,7 +44,7 @@ int main(int argc, char *argv[])
     if (balance.rate > 1)
         tree = balance_tree(tree, balance);
 
-    print_tree(tree);
+    display_products(tree);
     free_tree(tree);
 }
 

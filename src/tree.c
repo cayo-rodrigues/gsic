@@ -8,22 +8,6 @@
 const int TABLE_COLUMNS = 3;
 
 
-void print_tree(node *root)
-{
-    if (root == NULL)
-    {
-        return;
-    }
-    print_tree(root->left);
-
-    printf("%i\n", root->product.id);
-    printf("%s\n", root->product.name);
-    printf("%.2f\n", root->product.price);
-    printf("----------------------\n");
-
-    print_tree(root->right);
-}
-
 void free_tree(node *root)
 {
     if (root == NULL)
