@@ -5,3 +5,19 @@ typedef struct product
     double price;
 }
 product;
+
+typedef struct node
+{
+    product product;
+    struct node *left;
+    struct node *right;
+}
+node;
+
+typedef struct balance
+{
+    int rate;
+    int left_height;
+    int right_height;
+}
+balance;

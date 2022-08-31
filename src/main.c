@@ -2,13 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+// self made header files
 #include "structs.h"
+#include "tree.h"
 
 // global variables
 const char *PRODUCTS_DB_PATH = "src/db/products.csv";
 const int TABLE_COLS = 3;
+const int STR_MAX_LEN = 64;
 
-void read_db(product list[], FILE *fp);
+// function prototypes
+node *read_db(node *tree, FILE *fp);
 
 
 int main(int argc, char *argv[])
@@ -16,42 +20,49 @@ int main(int argc, char *argv[])
     FILE *fp = fopen(PRODUCTS_DB_PATH, "r");
     if (fp == NULL)
     {
-        printf("Could not read file");
+        printf("Could not read file\n");
         return 1;
     }
 
-    product products[8];
+    node *tree = NULL;
 
-    read_db(products, fp);
-
-    for (int i = 0; i < 8; i++)
+    tree = read_db(tree, fp);
+    if (tree == NULL)
     {
-        printf("%i\n", products[i].id);
-        printf("%s\n", products[i].name);
-        printf("%.2f\n", products[i].price);
-        printf("-----------------------\n");
+        printf("Out of memory\n");
+        return 1;
     }
 
     fclose(fp);
+
+    // get tree balance
+    balance balance = get_balance(tree);
+
+    // balance the tree if needed
+    if (balance.rate > 1)
+        tree = balance_tree(tree, balance);
+
+    print_tree(tree);
+    free_tree(tree);
 }
 
-void read_db(product list[], FILE *fp)
+
+// read a csv database pointed to by `fp` and return the data in a binary tree
+node *read_db(node *tree, FILE *fp)
 {
     // each string retrieved by fscanf
-    char str[128];
-    // determines if fscang found a pattern or not
+    char str[STR_MAX_LEN];
+    // determines if fscanf found a pattern or not
     int result;
 
-    // for iteration on each row columns
     int col_index = 0;
     char *row_info[TABLE_COLS];
 
-    // for iteration on each product row
     int row_index = 0;
 
     do {
-        // accept 127 bytes long strings, but reject commas and line breaks
-        result = fscanf(fp, "%127[^,\n]", str);
+        // accept 63 bytes long strings, but reject commas and line breaks
+        result = fscanf(fp, "%63[^,\n]", str);
 
         // when hitting a comma or line break
         if (result == 0)
@@ -67,16 +78,21 @@ void read_db(product list[], FILE *fp)
             // proceed to the next column
             col_index++;
 
-            // when reaching the end of a row
+            // when reaching the last column of a row
             if (col_index == TABLE_COLS)
             {
                 // skip header row
                 if (row_index != 0)
                 {
-                    // set each product info
-                    list[row_index - 1].id = atoi(row_info[0]);
-                    list[row_index - 1].price = atof(row_info[2]);
-                    strcpy(list[row_index - 1].name, row_info[1]);
+                    // build binary tree on the fly
+                    node *n = build_node(tree, row_info);
+
+                    if (row_index == 1)
+                    {
+                        tree = n;
+                    }
+
+                    insert_node(tree, n);
                 }
 
                 // reset to first column
@@ -91,4 +107,6 @@ void read_db(product list[], FILE *fp)
             }
         }
     } while (result != EOF);
+
+    return tree;
 }

@@ -36,7 +36,7 @@ $(PROJ_NAME): $(OBJS)
 	@ echo ' '
 	@ echo '\o/'
 
-./objects/%.o: $(C_SOURCE) $(H_SOURCE)
+./objects/%.o: ./src/%.c ./src/%.h
 	@ echo 'Building target using GCC compiler: $<'
 	$(CC) $< $(CC_FLAGS) -o $@
 	@ echo ' '
