@@ -8,9 +8,10 @@
 #include "products.h"
 
 // global variables
-const char *PRODUCTS_DB_PATH = "src/db/products.csv";
+const char *PRODUCTS_DB_PATH = "./src/db/products.csv";
 const int TABLE_COLS = 3;
 const int STR_MAX_LEN = 64;
+unsigned int LONGEST_STR = 3;
 
 // function prototypes
 node *read_db(node *tree, FILE *fp);
@@ -44,7 +45,10 @@ int main(int argc, char *argv[])
     if (balance.rate > 1)
         tree = balance_tree(tree, balance);
 
-    display_products(tree);
+    char *headings[3] = {"id", "name", "price"};
+    print_header(headings, LONGEST_STR);
+    display_products(tree, LONGEST_STR);
+
     free_tree(tree);
 }
 
@@ -89,9 +93,16 @@ node *read_db(node *tree, FILE *fp)
                     // build binary tree on the fly
                     node *n = build_node(tree, row_info);
 
+                    // on the first loop, tree get it's root node
                     if (row_index == 1)
                     {
                         tree = n;
+                    }
+
+                    unsigned int str_len = strlen(n->product.name);
+                    if (str_len > LONGEST_STR)
+                    {
+                        LONGEST_STR = str_len;
                     }
 
                     insert_node(tree, n);
