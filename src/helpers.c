@@ -55,3 +55,33 @@ char get_char(char *prompt)
     scanf(" %c", &c);
     return c;
 }
+
+void mkdir(char *path)
+{
+    char *buf = malloc((sizeof path) + 6 + 1);
+    sprintf(buf, "mkdir %s", path);
+    system(buf);
+    free(buf);
+}
+
+int is_dir(char *path)
+{
+    FILE *dp = fopen(path, "r");
+    int result = 1;
+    if (dp == NULL)
+    {
+        result = 0;
+    }
+    fclose(dp);
+    return result;
+}
+
+int mkdir_if_not_exists(char *path)
+{
+    if (is_dir(path))
+    {
+        return 0;
+    }
+    mkdir(path);
+    return 1;
+}

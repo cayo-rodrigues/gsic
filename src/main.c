@@ -10,7 +10,7 @@
 
 // global variables
 const char *PRODUCTS_DB_PATH = "./src/db/products.csv";
-const char *RECEIPTS_DIR_PATH = "./src/receipts/";
+char *RECEIPTS_DIR_PATH = "./receipts/";
 const int STR_MAX_LEN = 64;
 const int TABLE_COLS = 3;
 unsigned int LONGEST_STR = 3;
@@ -102,8 +102,10 @@ int main(void)
 
 void insert_receipt_row(FILE *fp, product p)
 {
+    int gap = (LONGEST_STR - (strlen(p.name) + idigits(p.amount))) + 7;
+
     fprintf(fp, "%s X%i", p.name, p.amount);
-    for (unsigned int i = 0; i < (LONGEST_STR - strlen(p.name)) + 5; i++)
+    for (int i = 0; i < gap; i++)
     {
         fprintf(fp, ".");
     }
@@ -123,12 +125,15 @@ void fill_receipt(FILE *fp, node *root)
 }
 
 
+// generate and format receipt txt file
 void generate_receipt(node *products_tree, char *date, double total_price)
 {
     long int seconds = now();
     char *buf = malloc((sizeof RECEIPTS_DIR_PATH) + 12 + idigits(seconds) + 1);
-
     sprintf(buf, "%sreceipt_%li.txt", RECEIPTS_DIR_PATH, seconds);
+
+    mkdir_if_not_exists(RECEIPTS_DIR_PATH);
+
     FILE *fp = fopen(buf, "w");
 
     fprintf(fp, "GSiC\n\n");
