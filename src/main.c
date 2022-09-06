@@ -10,12 +10,17 @@
 
 // global variables
 const char *PRODUCTS_DB_PATH = "./src/db/products.csv";
+const char *RECEIPTS_DIR_PATH = "./src/receipts/";
 const int STR_MAX_LEN = 64;
 const int TABLE_COLS = 3;
 unsigned int LONGEST_STR = 3;
 
 // function prototypes
 node *read_db(node *tree, FILE *fp);
+void generate_receipt(node *products_tree, char *date, double total_price);
+void insert_receipt_row(FILE *fp, product p);
+void fill_receipt(FILE *fp, node *root);
+
 
 
 int main(void)
@@ -75,14 +80,69 @@ int main(void)
     display_products(customer_tree, LONGEST_STR);
 
     double purchase_total_price = get_total_price(customer_tree, 0.00);
-    printf("\nTotal price: R$ %.2f\n", purchase_total_price);
+    printf("\nTotal price: R$ %.2f\n\n", purchase_total_price);
 
-    printf("\nGenerate receipt? (Y/n)\n");
+    char answer;
+    do {
+        answer = get_char("Generate receipt? (y/n) ");
+    } while (answer != 'y' && answer != 'n' && answer != 'Y' && answer != 'N');
+    printf("\n");
+    if (answer == 'y' || answer == 'Y')
+    {
+        generate_receipt(customer_tree, purchase_dt, purchase_total_price);
+        printf("\n");
+    }
 
     display_banner("Thank you for buying with us! :D");
 
     free_tree(db_tree);
     free_tree(customer_tree);
+}
+
+
+void insert_receipt_row(FILE *fp, product p)
+{
+    fprintf(fp, "%s X%i", p.name, p.amount);
+    for (unsigned int i = 0; i < (LONGEST_STR - strlen(p.name)) + 5; i++)
+    {
+        fprintf(fp, ".");
+    }
+    fprintf(fp, "R$ %.2f\n", p.price * p.amount);
+}
+
+
+void fill_receipt(FILE *fp, node *root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    fill_receipt(fp, root->left);
+    insert_receipt_row(fp, root->product);
+    fill_receipt(fp, root->right);
+}
+
+
+void generate_receipt(node *products_tree, char *date, double total_price)
+{
+    long int seconds = now();
+    char *buf = malloc((sizeof RECEIPTS_DIR_PATH) + 12 + idigits(seconds) + 1);
+
+    sprintf(buf, "%sreceipt_%li.txt", RECEIPTS_DIR_PATH, seconds);
+    FILE *fp = fopen(buf, "w");
+
+    fprintf(fp, "GSiC\n\n");
+    fprintf(fp, "Purchased on %s\n", date);
+    fprintf(fp, "Products: \n\n");
+
+    fill_receipt(fp, products_tree);
+
+    fprintf(fp, "\nTotal: R$ %.2f\n", total_price);
+
+    fclose(fp);
+    free(buf);
+
+    printf("Receipt file generated at receipts/filename.txt\n");
 }
 
 
@@ -100,8 +160,8 @@ node *read_db(node *tree, FILE *fp)
     int row_index = 0;
 
     do {
-        // accept 63 bytes long strings, but reject commas and line breaks
-        result = fscanf(fp, "%63[^,\n]", str);
+        // scan file reading between commas and line breaks
+        result = fscanf(fp, "%127[^,\n]", str);
 
         // when hitting a comma or line break
         if (result == 0)

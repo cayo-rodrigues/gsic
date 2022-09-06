@@ -2,3 +2,5 @@ objects
 objects/*.o
 gsic
 .vscode
+receipts
+receipts/*.txt

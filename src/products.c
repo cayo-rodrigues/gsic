@@ -182,6 +182,7 @@ node *register_products(node *db_tree)
 {
     node *customer_tree = NULL;
     int product_id = -1;
+
     while (product_id != 0) {
         printf("Product id: ");
         scanf("%i", &product_id);

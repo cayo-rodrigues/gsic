@@ -14,9 +14,14 @@ unsigned int idigits(int n)
     return digits;
 }
 
+time_t now(void)
+{
+    return time(NULL);
+}
+
 char *strnow(void)
 {
-    time_t dt = time(NULL);
+    time_t dt = now();
     return ctime(&dt);
 }
 
@@ -41,4 +46,12 @@ void display_banner(char *msg)
 void clear_screen(void)
 {
     system("clear");
+}
+
+char get_char(char *prompt)
+{
+    char c;
+    printf("%s", prompt);
+    scanf(" %c", &c);
+    return c;
 }
