@@ -5,6 +5,7 @@
 #include <limits.h>
 
 extern const int STR_MAX_LEN;
+extern const char *CLEAR_SCREEN_COMMAND;
 
 // return the number of digits of a given integer
 unsigned int idigits(int n)
@@ -55,11 +56,7 @@ void display_banner(char *msg)
 // clear the terminal screen
 void clear_screen(void)
 {
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
+    system(CLEAR_SCREEN_COMMAND);
 }
 
 
