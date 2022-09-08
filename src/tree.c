@@ -5,9 +5,10 @@
 #include "structs.h"
 #include "tree.h"
 
-const int TABLE_COLUMNS = 3;
+extern const int TABLE_COLS;
 
 
+// recursively free all nodes of a tree
 void free_tree(node *root)
 {
     if (root == NULL)
@@ -19,6 +20,8 @@ void free_tree(node *root)
     free(root);
 }
 
+
+// balance a binary tree, moving it's root as closest to the middle as possible
 node *balance_tree(node *tree, balance balance)
 {
     node *tmp = tree;
@@ -48,16 +51,9 @@ node *balance_tree(node *tree, balance balance)
     return tree;
 }
 
-balance get_balance(node *tree)
-{
-    balance balance;
-    balance.left_height = count_nodes(tree, 0) - 1;
-    balance.right_height = count_nodes(tree, 1) - 1;
-    balance.rate = abs(balance.left_height - balance.right_height);
 
-    return balance;
-}
-
+// recursively count how many nodes a tree has in it's outer branches,
+// either left (direction = 0) or right (direction = 1)
 int count_nodes(node *tree, int diretion)
 {
     if (tree == NULL)
@@ -70,7 +66,22 @@ int count_nodes(node *tree, int diretion)
         : count_nodes(tree->right, diretion) + 1;
 }
 
-// returns true(1) when finding an empty space, false(0) otherwise
+
+// return the overral balance of a tree, that is, how many nodes it has on both sides,
+// and the difference between it's two outer branches
+balance get_balance(node *tree)
+{
+    balance balance;
+    balance.left_height = count_nodes(tree, 0) - 1;
+    balance.right_height = count_nodes(tree, 1) - 1;
+    balance.rate = abs(balance.left_height - balance.right_height);
+
+    return balance;
+}
+
+
+// recursively looks for an appropriated place to insert a node in a tree,
+// using binary search algorithm
 int insert_node(node *root, node *node)
 {
     if (root == NULL)
@@ -96,7 +107,9 @@ int insert_node(node *root, node *node)
     return 0;
 }
 
-node *build_node(node *tree, char *node_info[TABLE_COLUMNS])
+
+// build a node to be inserted in a tree, and return it
+node *build_node(node *tree, char *node_info[TABLE_COLS])
 {
     node *n = malloc(sizeof(node));
     if (n == NULL)

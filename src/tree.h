@@ -1,6 +1,5 @@
 void free_tree(node* root);
 
-int count_nodes(node *tree, int diretion);
 int insert_node(node *root, node *node);
 
 balance get_balance(node* tree);

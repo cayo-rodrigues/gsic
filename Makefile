@@ -46,6 +46,11 @@ $(PROJ_NAME): $(OBJS)
 	$(CC) $< $(CC_FLAGS) -o $@
 	@ echo ' '
 
+./objects/globals.o: ./src/globals.c $(H_SOURCE)
+	@ echo 'Building target using GCC compiler: $<'
+	$(CC) $< $(CC_FLAGS) -o $@
+	@ echo ' '
+
 objects_dir:
 	@ mkdir -p objects
 
