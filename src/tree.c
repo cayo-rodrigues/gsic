@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "structs.h"
-#include "tree.h"
+#include "headers/structs.h"
+#include "headers/tree.h"
 
 extern const int TABLE_COLS;
 

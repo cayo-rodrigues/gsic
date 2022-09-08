@@ -2,10 +2,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "structs.h"
-#include "products.h"
-#include "tree.h"
-#include "helpers.h"
+#include "headers/structs.h"
+#include "headers/products.h"
+#include "headers/tree.h"
+#include "headers/helpers.h"
 
 extern const int TABLE_COLS;
 

@@ -55,7 +55,11 @@ void display_banner(char *msg)
 // clear the terminal screen
 void clear_screen(void)
 {
-    system("clear");
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
 }
 
 

@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#include "structs.h"
-#include "helpers.h"
+#include "headers/structs.h"
+#include "headers/helpers.h"
 
 extern char *RECEIPTS_DIR_PATH;
 extern unsigned int LONGEST_STR;

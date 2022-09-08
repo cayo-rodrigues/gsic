@@ -5,7 +5,7 @@ PROJ_NAME=gsic
 C_SOURCE=$(wildcard ./src/*.c)
 
 # .h files
-H_SOURCE=$(wildcard ./src/*.h)
+H_SOURCE=$(wildcard ./src/headers/*.h)
 
 # .o files
 OBJS=$(subst .c,.o,$(subst src,objects,$(C_SOURCE)))
@@ -36,7 +36,7 @@ $(PROJ_NAME): $(OBJS)
 	@ echo ' '
 	@ echo '\o/'
 
-./objects/%.o: ./src/%.c ./src/%.h
+./objects/%.o: ./src/%.c ./src/headers/%.h
 	@ echo 'Building target using GCC compiler: $<'
 	$(CC) $< $(CC_FLAGS) -o $@
 	@ echo ' '

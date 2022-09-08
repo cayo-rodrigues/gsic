@@ -4,12 +4,12 @@
 #include <string.h>
 
 // self made header files
-#include "structs.h"
-#include "receipts.h"
-#include "tree.h"
-#include "products.h"
-#include "helpers.h"
-#include "db.h"
+#include "headers/structs.h"
+#include "headers/receipts.h"
+#include "headers/tree.h"
+#include "headers/products.h"
+#include "headers/helpers.h"
+#include "headers/db.h"
 
 // global variables
 extern const char *PRODUCTS_DB_PATH;

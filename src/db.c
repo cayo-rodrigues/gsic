@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "structs.h"
-#include "tree.h"
+#include "headers/structs.h"
+#include "headers/tree.h"
 
 extern const char *PRODUCTS_DB_PATH;
 extern const int STR_MAX_LEN;
