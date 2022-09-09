@@ -1,3 +1,7 @@
+<div style="display: flex; justify-content: left; margin: 32px 0" >
+  <img src="./assets/logo.png" alt="project logo" width="250" />
+</div>
+
 # GSiC
 
 ## Sobre
