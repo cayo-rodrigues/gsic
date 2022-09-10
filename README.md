@@ -10,6 +10,7 @@ GSiC é uma sigla que significa **Grocery Store in C**.
 
 Este projeto realiza procedimentos comuns de um caixa em um mercado. Existe uma base de dados em formato `csv`, que contém os produtos disponíveis. Ao rodar o programa, os produtos podem ser passados no caixa um à um. Ao final da compra, se assim desejar, é gerada uma notinha, ou recibo, com as informações da compra, como a data, o valor de cada produto, e o preço total.
 
+### [Clique aqui para ver uma demonstração em vídeo](https://drive.google.com/file/d/1yQ8eaLHOqkbEe810dovin0SWaka78f52/view?usp=sharing)
 
 ## Tecnologias usadas no projeto
 
