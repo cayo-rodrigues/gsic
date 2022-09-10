@@ -1,4 +1,4 @@
-<div style="display: flex; justify-content: center; margin: 32px 0" >
+<div style="margin: 32px auto" align="center" >
   <img src="./assets/logo.png" alt="project logo" width="250" />
 </div>
 
